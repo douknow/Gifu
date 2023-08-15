@@ -37,9 +37,15 @@ public class Animator {
   private lazy var displayLink: CADisplayLink = { [unowned self] in
     self.displayLinkInitialized = true
     let display = CADisplayLink(target: DisplayLinkProxy(target: self), selector: #selector(DisplayLinkProxy.onScreenUpdate))
+      if #available(iOS 15.0, *) {
+          display.preferredFramesPerSecond = 60
+//          display.preferredFrameRateRange = .init(minimum: 1/120, maximum: 1/120)
+      }
     display.isPaused = true
     return display
   }()
+    
+    var lastTime: CFTimeInterval?
 
   /// Introspect whether the `displayLink` is paused.
   var isAnimating: Bool {
@@ -71,7 +77,13 @@ public class Animator {
         return
     }
     
-    store.shouldChangeFrame(with: displayLink.duration) {
+      var duration = displayLink.duration
+      if let lastTime {
+          duration = displayLink.targetTimestamp - lastTime
+      }
+      lastTime = displayLink.targetTimestamp
+      
+    store.shouldChangeFrame(with: duration) {
       if $0 {
           delegate.animatorHasNewFrame()
           if store.isLoopFinished, let loopBlock = loopBlock {

@@ -84,6 +84,8 @@ class FrameStore {
   }
 
   private let lock = NSLock()
+    
+    var lastTime: Date?
 
   /// Creates an animator instance from raw GIF image data and an `Animatable` delegate.
   ///
@@ -141,8 +143,11 @@ class FrameStore {
     if currentFrameDuration > timeSinceLastFrameChange {
       handler(false)
     } else {
-      resetTimeSinceLastFrameChange()
-      incrementCurrentFrameIndex()
+        while timeSinceLastFrameChange > currentFrameDuration {
+            resetTimeSinceLastFrameChange()
+            incrementCurrentFrameIndex()
+        }
+      
       handler(true)
     }
   }

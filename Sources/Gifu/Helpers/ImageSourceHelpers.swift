@@ -63,13 +63,21 @@ func duration(withUnclampedTime unclampedDelayTime: Double, andClampedTime delay
 
 /// An extension of `CGImageSourceRef` that adds GIF introspection and easier property retrieval.
 extension CGImageSource {
+
+    var isTypeGIF: Bool {
+        UTTypeConformsTo(CGImageSourceGetType(self) ?? "" as CFString, kUTTypeGIF)
+    }
+    
+    var isTypeHEICS: Bool {
+        UTTypeConformsTo(CGImageSourceGetType(self) ?? "" as CFString, "public.heics" as CFString)
+    }
+  
   /// Returns whether the image source contains an animated GIF.
   ///
   /// - returns: A boolean value that is `true` if the image source contains animated GIF data.
   var isAnimatedGIF: Bool {
-    let isTypeGIF = UTTypeConformsTo(CGImageSourceGetType(self) ?? "" as CFString, kUTTypeGIF)
     let imageCount = CGImageSourceGetCount(self)
-    return isTypeGIF != false && imageCount > 1
+    return imageCount > 1
   }
   
   /// Returns the GIF properties at a specific index.
@@ -77,8 +85,20 @@ extension CGImageSource {
   /// - parameter index: The index of the GIF properties to retrieve.
   /// - returns: A dictionary containing the GIF properties at the passed in index.
   func properties(at index: Int) -> GIFProperties? {
-    guard let imageProperties = CGImageSourceCopyPropertiesAtIndex(self, index, nil) as? [String: AnyObject] else { return nil }
-    return imageProperties[String(kCGImagePropertyGIFDictionary)] as? GIFProperties
+      CGImageSourceGetType(self)
+      if isTypeGIF {
+          guard let imageProperties = CGImageSourceCopyPropertiesAtIndex(self, index, nil) as? [String: AnyObject] else { return nil }
+          return imageProperties[String(kCGImagePropertyGIFDictionary)] as? GIFProperties
+      } else if isTypeHEICS {
+          guard let imageProperties = CGImageSourceCopyPropertiesAtIndex(self, index, nil) as? [String: AnyObject] else { return nil }
+          if #available(iOS 13.0, *) {
+              return imageProperties[String(kCGImagePropertyHEICSDictionary)] as? GIFProperties
+          } else {
+              return nil
+          }
+      } else {
+          return nil
+      }
   }
 }
 
