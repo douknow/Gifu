@@ -169,6 +169,7 @@ public class Animator {
   /// Stop animating.
   func stopAnimating() {
     displayLink.isPaused = true
+      lastTime = nil
   }
 
   /// Prepare for animation and start animating immediately.
