@@ -171,6 +171,19 @@ public class Animator {
     displayLink.isPaused = true
       lastTime = nil
   }
+    
+    /// Seek to frame index.
+    /// - Parameter index: Frame index.
+    public func seek(to index: Int) {
+        guard let frameStore,
+              index < frameCount
+        else {
+            return
+        }
+        
+        frameStore.currentFrameIndex = index
+        delegate.animatorHasNewFrame()
+    }
 
   /// Prepare for animation and start animating immediately.
   ///
