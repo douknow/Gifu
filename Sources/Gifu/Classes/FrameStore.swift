@@ -3,7 +3,7 @@ import ImageIO
 import UIKit
 
 /// Responsible for storing and updating the frames of a single GIF.
-class FrameStore {
+public class FrameStore {
 
   /// Total duration of one animation loop
   var loopDuration: TimeInterval = 0
@@ -86,6 +86,12 @@ class FrameStore {
   private let lock = NSLock()
     
     var lastTime: Date?
+    
+    /// The min frame index for playing.
+    public var minFrameIndex: Int = 0
+    
+    /// The max frame index for playing.
+    public var maxFrameIndex: Int = 0
 
   /// Creates an animator instance from raw GIF image data and an `Animatable` delegate.
   ///
@@ -104,6 +110,7 @@ class FrameStore {
   /// Loads the frames from an image source, resizes them, then caches them in `animatedFrames`.
   func prepareFrames(_ completionHandler: (() -> Void)? = nil) {
     frameCount = Int(CGImageSourceGetCount(imageSource))
+      maxFrameIndex = frameCount - 1
     lock.lock()
     animatedFrames.reserveCapacity(frameCount)
     lock.unlock()
@@ -220,6 +227,17 @@ private extension FrameStore {
   /// Increments the `currentFrameIndex` property.
   func incrementCurrentFrameIndex() {
     currentFrameIndex = increment(frameIndex: currentFrameIndex)
+      
+      if maxFrameIndex >= minFrameIndex {
+          if currentFrameIndex > maxFrameIndex {
+              currentFrameIndex = minFrameIndex
+          }
+          
+          if currentFrameIndex < minFrameIndex {
+              currentFrameIndex = minFrameIndex
+          }
+      }
+      
     if isLastFrame(frameIndex: currentFrameIndex) {
       isLoopFinished = true
       if isLastLoop(loopIndex: currentLoop) {
@@ -227,7 +245,7 @@ private extension FrameStore {
       }
     } else {
       isLoopFinished = false
-      if currentFrameIndex == 0 {
+      if currentFrameIndex == minFrameIndex {
         currentLoop = currentLoop + 1
       }
     }
@@ -246,7 +264,7 @@ private extension FrameStore {
   /// - parameter frameIndex: Index of current frame.
   /// - returns: True if current frame is the last one.
   func isLastFrame(frameIndex: Int) -> Bool {
-    return frameIndex == frameCount - 1
+    frameIndex == maxFrameIndex
   }
 
   /// Indicates if current loop is the last one. Always false for infinite loops.
