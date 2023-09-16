@@ -75,8 +75,10 @@ public class FrameStore {
 
   /// The current frame duration
   var currentFrameDuration: TimeInterval {
-    return duration(at: currentFrameIndex)
+    return duration(at: currentFrameIndex) / rate
   }
+    
+    public var rate: CGFloat = 1
 
   /// Is this image animatable?
   var isAnimatable: Bool {
