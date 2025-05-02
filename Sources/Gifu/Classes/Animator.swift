@@ -1,5 +1,6 @@
 #if os(iOS) || os(tvOS)
 import UIKit
+import AVFoundation
 
 /// Responsible for parsing GIF data and decoding the individual frames.
 public class Animator {
@@ -183,6 +184,27 @@ public class Animator {
         
         frameStore.currentFrameIndex = index
         delegate.animatorHasNewFrame()
+    }
+    
+    /// Seek to time.
+    /// - Parameter index: Time.
+    public func seek(to time: CMTime) {
+        guard let frameStore else {
+            return
+        }
+        
+        var currentTime: CMTime = .zero
+        for i in 0..<frameStore.frameCount {
+            let frameDuration = CMTime(seconds: frameStore.duration(at: i), preferredTimescale: 1000)
+            let nextTime = CMTimeAdd(currentTime, frameDuration)
+            
+            if nextTime > time || i == frameStore.frameCount - 1 {
+                seek(to: i)
+                return
+            }
+            
+            currentTime = nextTime
+        }
     }
 
   /// Prepare for animation and start animating immediately.
