@@ -214,7 +214,7 @@ extension GIFAnimatable {
 extension GIFAnimatable {
   /// Calls setNeedsDisplay on the layer whenever the animator has a new frame. Should *not* be called directly.
   func animatorHasNewFrame() {
-    layer.setNeedsDisplay()
+      updateImageIfNeeded()
   }
 }
 #endif

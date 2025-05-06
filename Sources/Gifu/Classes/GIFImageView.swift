@@ -7,15 +7,6 @@ public class GIFImageView: UIImageView, GIFAnimatable {
   public lazy var animator: Animator? = {
     return Animator(withDelegate: self)
   }()
-
-  /// Layer delegate method called periodically by the layer. **Should not** be called manually.
-  ///
-  /// - parameter layer: The delegated layer.
-  override public func display(_ layer: CALayer) {
-    if UIImageView.instancesRespond(to: #selector(display(_:))) {
-        super.display(layer)
-    }
-    updateImageIfNeeded()
-  }
+    
 }
 #endif

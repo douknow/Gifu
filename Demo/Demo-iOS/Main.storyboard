@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Gifu-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController title="Gifu" id="vXZ-lx-hvc" customClass="ViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Gifu" id="vXZ-lx-hvc" customClass="EditorViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -22,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Tap the image to pause/resume. Swipe to change GIF." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsv-cU-WO5">
-                                <rect key="frame" x="95" y="125" width="185" height="29"/>
+                                <rect key="frame" x="95.5" y="125" width="184.5" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="73c-sg-Egr"/>
                                 </constraints>
@@ -44,19 +41,19 @@
                                 </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Gifu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8Y-41-BaC">
-                                <rect key="frame" x="171" y="100" width="34" height="21"/>
+                                <rect key="frame" x="170.5" y="100" width="34" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.99144423007965088" green="0.56549066305160522" blue="0.033751130104064941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XcY-7q-76n">
-                                <rect key="frame" x="0.5" y="514" width="375" height="18"/>
+                                <rect key="frame" x="0.0" y="514" width="375" height="18"/>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" systemColor="darkTextColor"/>
                         <color key="tintColor" red="0.99144423007965088" green="0.56549066305160522" blue="0.033751130104064941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="XcY-7q-76n" firstAttribute="width" secondItem="FSz-xF-Xds" secondAttribute="width" id="306-mf-Sm0"/>
@@ -126,7 +123,7 @@
         <!--Gifu-->
         <scene sceneID="nSL-py-yiM">
             <objects>
-                <viewController title="Gifu" id="OGk-7x-6ul" customClass="ViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Gifu" id="OGk-7x-6ul" customClass="EditorViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="83f-xL-xEu"/>
                         <viewControllerLayoutGuide type="bottom" id="wIQ-rE-qNC"/>
@@ -136,7 +133,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="300" translatesAutoresizingMaskIntoConstraints="NO" id="Us4-12-3Mt" customClass="GIFImageView" customModule="Gifu">
-                                <rect key="frame" x="0.0" y="166" width="375" height="300"/>
+                                <rect key="frame" x="0.0" y="146" width="375" height="300"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Us4-12-3Mt" secondAttribute="height" multiplier="5:4" id="VBo-I2-vrW"/>
@@ -149,7 +146,7 @@
                                 </connections>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" systemColor="darkTextColor"/>
                         <color key="tintColor" red="0.99144423010000005" green="0.56549066309999996" blue="0.033751130099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Us4-12-3Mt" firstAttribute="leading" secondItem="1bA-xd-73D" secondAttribute="leading" id="3P4-3G-m6R"/>
@@ -191,4 +188,9 @@
             <point key="canvasLocation" x="1626" y="368"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
