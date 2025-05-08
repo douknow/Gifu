@@ -307,6 +307,7 @@ private extension FrameStore {
           loadFrameAtIndexIfNeeded(index)
       }
         
+      debugPrint("load frames \(animatedFrames.map(\.duration))")
       self.loopDuration = duration
   }
 
