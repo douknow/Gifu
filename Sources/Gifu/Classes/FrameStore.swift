@@ -306,8 +306,7 @@ private extension FrameStore {
           if index > bufferFrameCount { return }
           loadFrameAtIndexIfNeeded(index)
       }
-        
-      debugPrint("load frames \(animatedFrames.map(\.duration))")
+      
       self.loopDuration = duration
   }
 
