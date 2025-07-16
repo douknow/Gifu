@@ -1,7 +1,8 @@
 #if os(iOS) || os(tvOS)
+import UIKit
 import ImageIO
 import MobileCoreServices
-import UIKit
+import UniformTypeIdentifiers
 
 /// Most GIFs run between 15 and 24 Frames per second.
 ///
@@ -46,15 +47,19 @@ func capDuration(with duration: Double) -> Double {
 public extension CGImageSource {
 
     var isTypeGIF: Bool {
-        UTTypeConformsTo(CGImageSourceGetType(self) ?? "" as CFString, kUTTypeGIF)
+        UTType((CGImageSourceGetType(self) as? String ?? ""))?.conforms(to: .gif) ?? false
     }
     
     var isTypeHEICS: Bool {
-        UTTypeConformsTo(CGImageSourceGetType(self) ?? "" as CFString, "public.heics" as CFString)
+        (CGImageSourceGetType(self) as? String) == "public.heics"
     }
     
     var isTypeAPNG: Bool {
-        UTTypeConformsTo(CGImageSourceGetType(self) ?? "" as CFString, kUTTypePNG)
+        UTType((CGImageSourceGetType(self) as? String ?? ""))?.conforms(to: .png) ?? false
+    }
+    
+    var isTypeWebp: Bool {
+        UTType((CGImageSourceGetType(self) as? String ?? ""))?.conforms(to: .webP) ?? false
     }
   
     /// Returns whether the image source contains an animated GIF.
@@ -104,6 +109,15 @@ public extension CGImageSource {
             return duration(
                 withUnclampedTime: apngProperties[kCGImagePropertyAPNGUnclampedDelayTime] as? TimeInterval,
                 andClampedTime: apngProperties[kCGImagePropertyAPNGDelayTime] as? TimeInterval
+            )
+        } else if isTypeWebp {
+            guard let webpProperties = imageProperties[kCGImagePropertyWebPDictionary] as? [CFString: Any] else {
+                return nil
+            }
+            
+            return duration(
+                withUnclampedTime: webpProperties[kCGImagePropertyWebPUnclampedDelayTime] as? TimeInterval,
+                andClampedTime: webpProperties[kCGImagePropertyWebPDelayTime] as? TimeInterval
             )
         } else {
             return nil

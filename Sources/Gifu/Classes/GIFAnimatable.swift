@@ -133,8 +133,11 @@ extension GIFAnimatable {
   /// - parameter completionHandler: Callback for when preparation is done
   public func prepareForAnimation(withGIFData imageData: Data,
                                   loopCount: Int = 0,
+                                  showFirstFramePlaceholder: Bool = true,
                                   completionHandler: (() -> Void)? = nil) {
-    if var imageContainer = self as? ImageContainer {
+    if var imageContainer = self as? ImageContainer,
+       showFirstFramePlaceholder
+    {
       imageContainer.image = UIImage(data: imageData)
     }
 
@@ -152,6 +155,7 @@ extension GIFAnimatable {
   /// - parameter completionHandler: Callback for when preparation is done
   public func prepareForAnimation(withGIFURL imageURL: URL,
                                   loopCount: Int = 0,
+                                  showFirstFramePlaceholder: Bool = true,
                                   completionHandler: (() -> Void)? = nil) {
     let session = URLSession.shared
     let task = session.dataTask(with: imageURL) { (data, response, error) in
@@ -162,6 +166,7 @@ extension GIFAnimatable {
         DispatchQueue.main.async {
           self.prepareForAnimation(withGIFData: data,
                                    loopCount: loopCount,
+                                   showFirstFramePlaceholder: showFirstFramePlaceholder,
                                    completionHandler: completionHandler)
         }
       default: ()

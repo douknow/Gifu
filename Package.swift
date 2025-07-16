@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
   name: "Gifu",
-  platforms: [.iOS(.v9), .tvOS(.v11)],
+  platforms: [.iOS("17.0"), .tvOS(.v11)],
   products: [
     .library(
       name: "Gifu",
