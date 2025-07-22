@@ -14,10 +14,10 @@ private let defaultFrameRate: Double = 15.0
 private let defaultFrameDuration: Double = 1 / defaultFrameRate
 
 /// Threshold used in `capDuration` for a FrameDuration
-private let capDurationThreshold: Double = 0.01
+private let capDurationThreshold: Double = 0.02
 
 /// Frameduration used, if a frame-duration is below `capDurationThreshold`
-private let minFrameDuration: Double = 0.01
+private let minFrameDuration: Double = 0.1
 
 /// Retruns the duration of a frame at a specific index using an image source (an `CGImageSource` instance).
 ///
@@ -81,7 +81,7 @@ public extension CGImageSource {
     func duration(imageProperties: [CFString: Any]) -> TimeInterval? {
         if isTypeGIF {
             guard let gifProperties = imageProperties[kCGImagePropertyGIFDictionary] as? [CFString: Any] else {
-                return nil
+                return duration(withUnclampedTime: 0, andClampedTime: 0)
             }
             
             return duration(
@@ -91,7 +91,7 @@ public extension CGImageSource {
         } else if isTypeHEICS {
             if #available(iOS 13.0, *) {
                 guard let heicsProperties = imageProperties[kCGImagePropertyHEICSDictionary] as? [CFString: Any] else {
-                    return nil
+                    return duration(withUnclampedTime: 0, andClampedTime: 0)
                 }
                 
                 return duration(
@@ -103,7 +103,7 @@ public extension CGImageSource {
             }
         } else if isTypeAPNG {
             guard let apngProperties = imageProperties[kCGImagePropertyPNGDictionary] as? [CFString: Any] else {
-                return nil
+                return duration(withUnclampedTime: 0, andClampedTime: 0)
             }
             
             return duration(
@@ -112,7 +112,7 @@ public extension CGImageSource {
             )
         } else if isTypeWebp {
             guard let webpProperties = imageProperties[kCGImagePropertyWebPDictionary] as? [CFString: Any] else {
-                return nil
+                return duration(withUnclampedTime: 0, andClampedTime: 0)
             }
             
             return duration(
@@ -129,7 +129,8 @@ public extension CGImageSource {
     /// - returns: A frame duration.
     func duration(withUnclampedTime unclampedDelayTime: Double?, andClampedTime delayTime: Double?) -> TimeInterval? {
         let delayArray = [unclampedDelayTime, delayTime]
-        return delayArray.compactMap { $0 }.filter({ $0 >= 0 }).first
+        let delayTime = delayArray.compactMap { $0 }.filter({ $0 >= 0 }).first ?? 0
+        return delayTime < capDurationThreshold ? minFrameDuration : delayTime
     }
     
 }
