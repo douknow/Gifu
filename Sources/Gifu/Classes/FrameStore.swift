@@ -149,16 +149,21 @@ public class FrameStore {
   func shouldChangeFrame(with duration: CFTimeInterval, handler: (Bool) -> Void) {
     incrementTimeSinceLastFrameChange(with: duration)
 
-    if currentFrameDuration > timeSinceLastFrameChange {
-      handler(false)
-    } else {
-        while timeSinceLastFrameChange > currentFrameDuration {
-            resetTimeSinceLastFrameChange()
-            incrementCurrentFrameIndex()
-        }
-      
-      handler(true)
+    var didChangeFrame = false
+    while timeSinceLastFrameChange >= currentFrameDuration {
+      let frameDuration = currentFrameDuration
+      guard frameDuration.isFinite, frameDuration > 0 else {
+        timeSinceLastFrameChange = 0
+        handler(didChangeFrame)
+        return
+      }
+
+      resetTimeSinceLastFrameChange()
+      incrementCurrentFrameIndex()
+      didChangeFrame = true
     }
+
+    handler(didChangeFrame)
   }
 }
 

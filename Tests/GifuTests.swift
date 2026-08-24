@@ -4,6 +4,7 @@ import ImageIO
 @testable import Gifu
 
 private let imageData = testImageDataNamed("mugen.gif")
+private let singleFrameImageData = Data(base64Encoded: "R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==")!
 private let staticImage = UIImage(data: imageData)!
 private let preloadFrameCount = 20
 
@@ -39,6 +40,42 @@ class GifuTests: XCTestCase {
     XCTAssertNotNil(animator.frameStore)
     guard let store = animator.frameStore else { return }
     XCTAssertEqual(store.currentFrameIndex, 0)
+  }
+
+  func testSwitchingToSingleFrameStopsAnimation() {
+    animator.startAnimating()
+    XCTAssertTrue(animator.isAnimating)
+
+    animator.prepareForAnimation(
+      withGIFData: singleFrameImageData,
+      size: CGSize(width: 1, height: 1),
+      contentMode: .scaleToFill
+    )
+    animator.startAnimating()
+
+    XCTAssertFalse(animator.isAnimating)
+  }
+
+  func testSingleFrameWithZeroDurationDoesNotChangeFrame() {
+    let store = FrameStore(
+      data: singleFrameImageData,
+      size: CGSize(width: 1, height: 1),
+      contentMode: .scaleToFill,
+      framePreloadCount: 1,
+      loopCount: 0
+    )
+    let expectation = expectation(description: "single frame prepared")
+
+    store.prepareFrames {
+      XCTAssertEqual(store.currentFrameDuration, 0)
+      store.shouldChangeFrame(with: 1.0) { hasNewFrame in
+        XCTAssertFalse(hasNewFrame)
+        XCTAssertEqual(store.currentFrameIndex, 0)
+        expectation.fulfill()
+      }
+    }
+
+    waitForExpectations(timeout: 1.0)
   }
 
   func testFramePreload() {

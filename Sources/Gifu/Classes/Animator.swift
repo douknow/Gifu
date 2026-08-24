@@ -122,6 +122,7 @@ public class Animator {
   /// - parameter loopCount: Desired number of loops, <= 0 for infinite loop.
   /// - parameter completionHandler: Completion callback function
   func prepareForAnimation(withGIFData imageData: Data, size: CGSize, contentMode: UIView.ContentMode, loopCount: Int = 0, completionHandler: (() -> Void)? = nil) {
+    stopAnimating()
     frameStore = FrameStore(data: imageData,
                             size: size,
                             contentMode: contentMode,
@@ -148,6 +149,7 @@ public class Animator {
     if frameStore?.isAnimatable ?? false {
       displayLink.isPaused = false
     } else {
+      stopAnimating()
       let block = preparationBlock
       preparationBlock = { [weak self] in
         block?()
